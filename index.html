@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+     <script src="//unpkg.com/alpinejs" defer></script>
+</head>
+<body>
+     <h1>Bootcamp functions</h1>
+     <section class="blocks">
+        <h2>Greet function</h2>
+        <div class="block" x-data="{message : '', username : '', greet(name) {
+                    if (name.length > 0) {
+	                return 'Hello, ' + name;
+                    };
+                    }
+                }">
+            <input x-model="username" type="text">
+            <button x-on:click="message = greet(username)">Greet!</button>
+            <p x-text="message"></p>
+        </div>
+     </section>
+     <hr>
+
+     <section class="blocks">
+        <h2>Transport fee</h2>
+        <div class="block" x-data="{shift : '', fee : '',
+            selectedShift : 'no shift selected...',
+            shifts : ['Morning', 'Afternoon', 'Nightshift'], transportFee(shift) {
+                shift = shift.toLowerCase();
+                switch(shift) {
+                case 'morning':
+                  return 'R20';
+                case 'afternoon':
+                  return 'R10';
+                case 'nightshift':
+                  return 'free';
+                           }
+                }
+        }" >
+            Selected shift : 
+            <select x-model="selectedShift" >
+                <option value="">Select shift</option>
+                <template x-for="shift in shifts">
+                    <option x-text="shift" ></option>
+                </template>
+                              
+            </select>
+            <span x-text="'Fee: ' + transportFee(selectedShift)" >...</span>
+     </section>
+     <hr>
+
+     <section class="blocks">
+        <h2>Phone Bill</h2>
+        <div class="blocks" x-data="{callTotal : 0, smsTotal: 0, billTotal : 0, totalPhoneBill(calls,smses) {
+           
+          var callcost = calls * 2.75;
+          var smscost = smses * 0.65;
+          var billtotal = (callcost + smscost);
+          return 'R'+ billtotal.toFixed(2);
+        }
+    }">
+                <p x-text="'Call total: ' + callTotal"></p>
+                <p x-text="'Sms total: ' + smsTotal"></p>
+                <p x-text="'Billtotal: ' + billTotal"></p>
+
+                <button @click="callTotal++">Add Call</button>
+                <button @click="smsTotal++">Add SMS</button>
+                <button @click="billTotal = totalPhoneBill(callTotal,smsTotal)">Calculate Total</button>
+
+        </div>
+        <hr>
+
+        <section class="blocks">
+        <h2>enoughAirtime</h2>
+        <div class="blocks" x-data="{airtimeLeft : 0, callTotal : 0, smsTotal: 0, dataTotal: 0,loaded: 0, billTotal : 0, enoughAirtime(calls, smses, data, loaded) {
+        
+          var callcost = calls * 1.88;
+          var smscost = smses * 0.75;
+          var datacost = data * 12;
+          var billtotal = (callcost + smscost + datacost);
+          var balance = loaded - billtotal;
+          
+          if (balance > 0) {
+            return 'R'+ balance.toFixed(2);
+          }
+          return 'R0.00' ;
+        }}">
+                <p x-text="'Call total: ' + callTotal"></p>
+                <p x-text="'Sms total: ' + smsTotal"></p>
+                <p x-text="'Data total: ' + dataTotal"></p>
+                <p x-text="'Airtime left: ' + airtimeLeft"></p>
+
+                <button @click="callTotal++">Add Call</button>
+                <button @click="smsTotal++">Add SMS</button>
+                <button @click="dataTotal++">Add data</button>
+                <input x-model="loaded" type="text">
+                <button @click="airtimeLeft = enoughAirtime(callTotal, smsTotal, dataTotal, loaded)">Calculate Airtime left</button>
+
+        </div>
+
+
+
+
+     </section>
+
+     
+    
+</body>
+</html>
